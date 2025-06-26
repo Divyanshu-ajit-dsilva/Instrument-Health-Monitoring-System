@@ -1,0 +1,192 @@
+﻿@model Instrument
+@{
+    ViewData["Title"] = "Instrument Details";
+    var userRole = ViewBag.UserRole as string;
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4><i class="fas fa-info-circle"></i> Instrument Details</h4>
+                @if (!Model.IsApproved)
+                {
+                    <span class="badge bg-warning">
+                        <i class="fas fa-clock"></i> Pending Approval
+                    </span>
+                }
+                else
+                {
+                    <span class="badge bg-success">
+                        <i class="fas fa-check"></i> Approved
+                    </span>
+                }
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <table class="table table-borderless">
+                            <tr>
+                                <th>Instrument Code:</th>
+                                <td>@Model.InstrumentCode</td>
+                            </tr>
+                            <tr>
+                                <th>Instrument Name:</th>
+                                <td>@Model.InstrumentName</td>
+                            </tr>
+                            <tr>
+                                <th>Department:</th>
+                                <td>@Model.Department</td>
+                            </tr>
+                            <tr>
+                                <th>Location:</th>
+                                <td>@Model.Location</td>
+                            </tr>
+                            <tr>
+                                <th>Manufacturer:</th>
+                                <td>@Model.Manufacturer</td>
+                            </tr>
+                            <tr>
+                                <th>Model:</th>
+                                <td>@Model.Model</td>
+                            </tr>
+                            <tr>
+                                <th>Serial Number:</th>
+                                <td>@Model.SerialNumber</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <table class="table table-borderless">
+                            <tr>
+                                <th>Installation Date:</th>
+                                <td>@Model.InstallationDate.ToString("dd/MM/yyyy")</td>
+                            </tr>
+                            <tr>
+                                <th>Last Maintenance:</th>
+                                <td>@Model.LastMaintenanceDate.ToString("dd/MM/yyyy")</td>
+                            </tr>
+                            <tr>
+                                <th>Next Maintenance:</th>
+                                <td>@Model.NextMaintenanceDate.ToString("dd/MM/yyyy")</td>
+                            </tr>
+                            <tr>
+                                <th>Health Status:</th>
+                                <td>
+                                    <span class="badge @GetStatusBadgeClass(Model.Status)">
+                                        @Model.Status
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Created By:</th>
+                                <td>@Model.CreatedBy</td>
+                            </tr>
+                            <tr>
+                                <th>Created Date:</th>
+                                <td>@Model.CreatedDate.ToString("dd/MM/yyyy HH:mm")</td>
+                            </tr>
+                            @if (Model.IsApproved)
+                            {
+                                <tr>
+                                    <th>Approved By:</th>
+                                    <td>@Model.ApprovedBy</td>
+                                </tr>
+                                <tr>
+                                    <th>Approved Date:</th>
+                                    <td>@Model.ApprovedDate?.ToString("dd/MM/yyyy HH:mm")</td>
+                                </tr>
+                            }
+                        </table>
+                    </div>
+                </div>
+
+                @if (!string.IsNullOrEmpty(Model.Notes))
+                {
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <h6>Notes:</h6>
+                            <p class="text-muted">@Model.Notes</p>
+                        </div>
+                    </div>
+                }
+
+                <div class="mt-4">
+                    @if (userRole == "SuperUser")
+                    {
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                    }
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to List
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h6><i class="fas fa-chart-line"></i> Health Status Overview</h6>
+            </div>
+            <div class="card-body text-center">
+                <div class="status-indicator mb-3">
+                    <span class="badge @GetStatusBadgeClass(Model.Status) p-3 fs-6">
+                        @Model.Status
+                    </span>
+                </div>
+                @{
+                    var daysUntilMaintenance = (Model.NextMaintenanceDate - DateTime.Now).Days;
+                }
+                <div class="maintenance-alert">
+                    @if (daysUntilMaintenance <= 0)
+                    {
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Maintenance Overdue!
+                        </div>
+                    }
+                    else if (daysUntilMaintenance <= 7)
+                    {
+                        <div class="alert alert-warning">
+                            <i class="fas fa-clock"></i>
+                            Maintenance due in @daysUntilMaintenance days
+                        </div>
+                    }
+                    else if (daysUntilMaintenance <= 30)
+                    {
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i>
+                            Maintenance due in @daysUntilMaintenance days
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-success">
+                            <i class="fas fa-check-circle"></i>
+                            Maintenance not due yet
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions {
+    string GetStatusBadgeClass(HealthStatus status)
+    {
+        return status switch
+        {
+            HealthStatus.Excellent => "bg-success",
+            HealthStatus.Good => "bg-info",
+            HealthStatus.Fair => "bg-warning",
+            HealthStatus.Poor => "bg-danger",
+            HealthStatus.Critical => "bg-danger",
+            HealthStatus.OutOfService => "bg-dark",
+            _ => "bg-secondary"
+        };
+    }
+}

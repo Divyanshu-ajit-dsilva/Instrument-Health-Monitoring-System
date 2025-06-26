@@ -1,0 +1,121 @@
+﻿@model Instrument
+@{
+    ViewData["Title"] = "Create Instrument";
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4><i class="fas fa-plus"></i> Create New Instrument</h4>
+            </div>
+            <div class="card-body">
+                <form asp-action="Create" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="InstrumentCode" class="form-label">Instrument Code *</label>
+                                <input asp-for="InstrumentCode" class="form-control" />
+                                <span asp-validation-for="InstrumentCode" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="InstrumentName" class="form-label">Instrument Name *</label>
+                                <input asp-for="InstrumentName" class="form-control" />
+                                <span asp-validation-for="InstrumentName" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="Location" class="form-label">Location</label>
+                                <input asp-for="Location" class="form-control" />
+                                <span asp-validation-for="Location" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="Manufacturer" class="form-label">Manufacturer</label>
+                                <input asp-for="Manufacturer" class="form-control" />
+                                <span asp-validation-for="Manufacturer" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="Model" class="form-label">Model</label>
+                                <input asp-for="Model" class="form-control" />
+                                <span asp-validation-for="Model" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="SerialNumber" class="form-label">Serial Number</label>
+                                <input asp-for="SerialNumber" class="form-control" />
+                                <span asp-validation-for="SerialNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group mb-3">
+                                <label asp-for="InstallationDate" class="form-label">Installation Date</label>
+                                <input asp-for="InstallationDate" type="date" class="form-control" />
+                                <span asp-validation-for="InstallationDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group mb-3">
+                                <label asp-for="LastMaintenanceDate" class="form-label">Last Maintenance Date</label>
+                                <input asp-for="LastMaintenanceDate" type="date" class="form-control" />
+                                <span asp-validation-for="LastMaintenanceDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group mb-3">
+                                <label asp-for="NextMaintenanceDate" class="form-label">Next Maintenance Date</label>
+                                <input asp-for="NextMaintenanceDate" type="date" class="form-control" />
+                                <span asp-validation-for="NextMaintenanceDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="Status" class="form-label">Health Status *</label>
+                                <select asp-for="Status" asp-items="Html.GetEnumSelectList<HealthStatus>()" class="form-select">
+                                    <option value="">Select Status</option>
+                                </select>
+                                <span asp-validation-for="Status" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Notes" class="form-label">Notes</label>
+                        <textarea asp-for="Notes" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="Notes" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-save"></i> Create Instrument
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Back to List
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
