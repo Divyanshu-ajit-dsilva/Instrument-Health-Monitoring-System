@@ -1,7 +1,7 @@
 ﻿using InstrumentKaHealth.Models;
-using InstrumentKaHealth.Models;
 using Microsoft.EntityFrameworkCore;
-//using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
 
 namespace InstrumentKaHealth.Data
 {
