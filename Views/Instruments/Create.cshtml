@@ -40,8 +40,8 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group mb-3">
-                                <label asp-for="Department" class="form-label">Department *</label>
-                                <input asp-for="Department" class="form-control" />
+                                <label asp-for="Department" class="form-label">Department</label>
+                                <input asp-for="Department" class="form-control" readonly />
                                 <span asp-validation-for="Department" class="text-danger"></span>
                             </div>
                         </div>
@@ -51,14 +51,14 @@
                         <div class="col-md-6">
                             <div class="form-group mb-3">
                                 <label asp-for="LastMaintenanceDate" class="form-label">Last Maintenance Date</label>
-                                <input asp-for="LastMaintenanceDate" type="date" class="form-control" />
+                                <input asp-for="LastMaintenanceDate" type="date" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
                                 <span asp-validation-for="LastMaintenanceDate" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group mb-3">
                                 <label asp-for="NextMaintenanceDate" class="form-label">Next Maintenance Date</label>
-                                <input asp-for="NextMaintenanceDate" type="date" class="form-control" />
+                                <input asp-for="NextMaintenanceDate" type="date" class="form-control" value="@DateTime.Now.AddMonths(6).ToString("yyyy-MM-dd")" />
                                 <span asp-validation-for="NextMaintenanceDate" class="text-danger"></span>
                             </div>
                         </div>
@@ -69,8 +69,7 @@
                             <div class="form-group mb-3">
                                 <label asp-for="Status" class="form-label">Status *</label>
                                 <select asp-for="Status" class="form-select">
-                                    <option value="">Select Status</option>
-                                    <option value="Operational">Operational</option>
+                                    <option value="Operational" selected>Operational</option>
                                     <option value="Under Maintenance">Under Maintenance</option>
                                     <option value="Out of Service">Out of Service</option>
                                     <option value="Needs Attention">Needs Attention</option>
@@ -99,3 +98,7 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
