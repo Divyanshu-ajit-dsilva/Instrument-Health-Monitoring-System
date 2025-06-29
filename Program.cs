@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseOracle(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseInMemoryDatabase("InstrumentHealthDb"));
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
@@ -22,6 +22,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 .AddDefaultTokenProviders();
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
 builder.Services.AddScoped<IInstrumentService, InstrumentService>();
 
 var app = builder.Build();
@@ -46,9 +47,17 @@ app.MapControllerRoute(
 
 app.MapRazorPages();
 
-// Seed roles and admin user
+// Seed some initial data for testing
 using (var scope = app.Services.CreateScope())
 {
+    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    
+    // Ensure the in-memory database is created
+    context.Database.EnsureCreated();
+    
+    // Initialize with some test data
     await SeedData.Initialize(scope.ServiceProvider);
 }
 

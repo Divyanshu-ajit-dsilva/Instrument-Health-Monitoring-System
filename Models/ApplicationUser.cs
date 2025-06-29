@@ -7,10 +7,11 @@ namespace InstrumentKaHealth.Models
     {
         [Required]
         [StringLength(100)]
-        public string FullName { get; set; }
+        public string FullName { get; set; } = string.Empty;
 
+        [Required]
         [StringLength(100)]
-        public string Department { get; set; }
+        public string Department { get; set; } = string.Empty;
 
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public bool IsActive { get; set; } = true;

@@ -27,12 +27,12 @@
                     <div class="col-md-6">
                         <table class="table table-borderless">
                             <tr>
-                                <th>Instrument Code:</th>
-                                <td>@Model.InstrumentCode</td>
+                                <th>Name:</th>
+                                <td>@Model.Name</td>
                             </tr>
                             <tr>
-                                <th>Instrument Name:</th>
-                                <td>@Model.InstrumentName</td>
+                                <th>Serial Number:</th>
+                                <td>@Model.SerialNumber</td>
                             </tr>
                             <tr>
                                 <th>Department:</th>
@@ -42,26 +42,10 @@
                                 <th>Location:</th>
                                 <td>@Model.Location</td>
                             </tr>
-                            <tr>
-                                <th>Manufacturer:</th>
-                                <td>@Model.Manufacturer</td>
-                            </tr>
-                            <tr>
-                                <th>Model:</th>
-                                <td>@Model.Model</td>
-                            </tr>
-                            <tr>
-                                <th>Serial Number:</th>
-                                <td>@Model.SerialNumber</td>
-                            </tr>
                         </table>
                     </div>
                     <div class="col-md-6">
                         <table class="table table-borderless">
-                            <tr>
-                                <th>Installation Date:</th>
-                                <td>@Model.InstallationDate.ToString("dd/MM/yyyy")</td>
-                            </tr>
                             <tr>
                                 <th>Last Maintenance:</th>
                                 <td>@Model.LastMaintenanceDate.ToString("dd/MM/yyyy")</td>
@@ -71,7 +55,7 @@
                                 <td>@Model.NextMaintenanceDate.ToString("dd/MM/yyyy")</td>
                             </tr>
                             <tr>
-                                <th>Health Status:</th>
+                                <th>Status:</th>
                                 <td>
                                     <span class="badge @GetStatusBadgeClass(Model.Status)">
                                         @Model.Status
@@ -84,7 +68,7 @@
                             </tr>
                             <tr>
                                 <th>Created Date:</th>
-                                <td>@Model.CreatedDate.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
                             </tr>
                             @if (Model.IsApproved)
                             {
@@ -94,7 +78,7 @@
                                 </tr>
                                 <tr>
                                     <th>Approved Date:</th>
-                                    <td>@Model.ApprovedDate?.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td>@Model.ApprovedAt?.ToString("dd/MM/yyyy HH:mm")</td>
                                 </tr>
                             }
                         </table>
@@ -129,7 +113,7 @@
     <div class="col-md-4">
         <div class="card">
             <div class="card-header">
-                <h6><i class="fas fa-chart-line"></i> Health Status Overview</h6>
+                <h6><i class="fas fa-chart-line"></i> Status Overview</h6>
             </div>
             <div class="card-body text-center">
                 <div class="status-indicator mb-3">
@@ -176,16 +160,14 @@
 </div>
 
 @functions {
-    string GetStatusBadgeClass(HealthStatus status)
+    string GetStatusBadgeClass(string status)
     {
         return status switch
         {
-            HealthStatus.Excellent => "bg-success",
-            HealthStatus.Good => "bg-info",
-            HealthStatus.Fair => "bg-warning",
-            HealthStatus.Poor => "bg-danger",
-            HealthStatus.Critical => "bg-danger",
-            HealthStatus.OutOfService => "bg-dark",
+            "Operational" => "bg-success",
+            "Under Maintenance" => "bg-warning",
+            "Out of Service" => "bg-danger",
+            "Needs Attention" => "bg-info",
             _ => "bg-secondary"
         };
     }

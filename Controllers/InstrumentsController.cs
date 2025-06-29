@@ -23,6 +23,11 @@ namespace InstrumentKaHealth.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Challenge();
+            }
+
             List<Instrument> instruments;
 
             if (User.IsInRole("SuperUser"))
@@ -52,15 +57,20 @@ namespace InstrumentKaHealth.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return Challenge();
+                }
+
                 instrument.CreatedBy = user.FullName;
-                instrument.CreatedDate = DateTime.Now;
+                instrument.CreatedAt = DateTime.Now;
                 instrument.Department = user.Department;
 
                 if (User.IsInRole("SuperUser"))
                 {
                     instrument.IsApproved = true;
                     instrument.ApprovedBy = user.FullName;
-                    instrument.ApprovedDate = DateTime.Now;
+                    instrument.ApprovedAt = DateTime.Now;
                 }
 
                 var success = await _instrumentService.CreateInstrumentAsync(instrument);
@@ -115,8 +125,13 @@ namespace InstrumentKaHealth.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return Challenge();
+                }
+
                 instrument.LastModifiedBy = user.FullName;
-                instrument.LastModifiedDate = DateTime.Now;
+                instrument.LastModifiedAt = DateTime.Now;
 
                 var success = await _instrumentService.UpdateInstrumentAsync(instrument);
                 if (success)
@@ -145,6 +160,11 @@ namespace InstrumentKaHealth.Controllers
         public async Task<IActionResult> Approve(int id)
         {
             var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Challenge();
+            }
+
             var success = await _instrumentService.ApproveInstrumentAsync(id, user.FullName);
 
             if (success)

@@ -16,7 +16,7 @@ namespace InstrumentKaHealth.Services
         {
             return await _context.Instruments
                 .Include(i => i.MaintenanceRecords)
-                .OrderBy(i => i.InstrumentCode)
+                .OrderBy(i => i.Name)
                 .ToListAsync();
         }
 
@@ -25,7 +25,7 @@ namespace InstrumentKaHealth.Services
             return await _context.Instruments
                 .Where(i => i.Department == department)
                 .Include(i => i.MaintenanceRecords)
-                .OrderBy(i => i.InstrumentCode)
+                .OrderBy(i => i.Name)
                 .ToListAsync();
         }
 
@@ -33,11 +33,11 @@ namespace InstrumentKaHealth.Services
         {
             return await _context.Instruments
                 .Where(i => !i.IsApproved)
-                .OrderBy(i => i.CreatedDate)
+                .OrderBy(i => i.CreatedAt)
                 .ToListAsync();
         }
 
-        public async Task<Instrument> GetInstrumentByIdAsync(int id)
+        public async Task<Instrument?> GetInstrumentByIdAsync(int id)
         {
             return await _context.Instruments
                 .Include(i => i.MaintenanceRecords)
@@ -100,7 +100,7 @@ namespace InstrumentKaHealth.Services
                 {
                     instrument.IsApproved = true;
                     instrument.ApprovedBy = approvedBy;
-                    instrument.ApprovedDate = DateTime.Now;
+                    instrument.ApprovedAt = DateTime.Now;
                     await _context.SaveChangesAsync();
                     return true;
                 }

@@ -6,51 +6,43 @@ namespace InstrumentKaHealth.Models
         public int Id { get; set; }
 
         [Required]
-        [StringLength(50)]
-        public string InstrumentCode { get; set; }
-
-        [Required]
         [StringLength(200)]
-        public string InstrumentName { get; set; }
-
-        [StringLength(100)]
-        public string Department { get; set; }
-
-        [StringLength(100)]
-        public string Location { get; set; }
-
-        [StringLength(100)]
-        public string Manufacturer { get; set; }
-
-        [StringLength(50)]
-        public string Model { get; set; }
-
-        [StringLength(50)]
-        public string SerialNumber { get; set; }
-
-        public DateTime InstallationDate { get; set; }
-
-        public DateTime LastMaintenanceDate { get; set; }
-
-        public DateTime NextMaintenanceDate { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         [Required]
-        public HealthStatus Status { get; set; }
+        [StringLength(50)]
+        public string SerialNumber { get; set; } = string.Empty;
+
+        [Required]
+        [StringLength(100)]
+        public string Location { get; set; } = string.Empty;
+
+        [Required]
+        [StringLength(100)]
+        public string Department { get; set; } = string.Empty;
+
+        [Required]
+        public string Status { get; set; } = "Operational";
+
+        public DateTime LastMaintenanceDate { get; set; } = DateTime.Now;
+
+        public DateTime NextMaintenanceDate { get; set; } = DateTime.Now.AddMonths(6);
 
         [StringLength(500)]
-        public string Notes { get; set; }
+        public string? Notes { get; set; }
 
-        public string CreatedBy { get; set; }
-        public DateTime CreatedDate { get; set; } = DateTime.Now;
+        [Required]
+        public string CreatedBy { get; set; } = string.Empty;
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-        public string LastModifiedBy { get; set; }
-        public DateTime? LastModifiedDate { get; set; }
+        public string? LastModifiedBy { get; set; }
+        public DateTime? LastModifiedAt { get; set; }
 
-        public bool IsApproved { get; set; } = false;
-        public string ApprovedBy { get; set; }
-        public DateTime? ApprovedDate { get; set; }
+        public bool IsApproved { get; set; }
+        public string? ApprovedBy { get; set; }
+        public DateTime? ApprovedAt { get; set; }
 
-        public List<MaintenanceRecord> MaintenanceRecords { get; set; } = new List<MaintenanceRecord>();
+        public virtual ICollection<MaintenanceRecord> MaintenanceRecords { get; set; } = new List<MaintenanceRecord>();
     }
 
     public enum HealthStatus

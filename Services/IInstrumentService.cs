@@ -7,7 +7,7 @@ namespace InstrumentKaHealth.Services
         Task<List<Instrument>> GetAllInstrumentsAsync();
         Task<List<Instrument>> GetInstrumentsByDepartmentAsync(string department);
         Task<List<Instrument>> GetPendingApprovalsAsync();
-        Task<Instrument> GetInstrumentByIdAsync(int id);
+        Task<Instrument?> GetInstrumentByIdAsync(int id);
         Task<bool> CreateInstrumentAsync(Instrument instrument);
         Task<bool> UpdateInstrumentAsync(Instrument instrument);
         Task<bool> DeleteInstrumentAsync(int id);

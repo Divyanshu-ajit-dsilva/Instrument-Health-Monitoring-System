@@ -9,6 +9,7 @@ namespace InstrumentKaHealth.Data
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            var context = serviceProvider.GetRequiredService<ApplicationDbContext>();
 
             // Create roles
             string[] roleNames = { "SuperUser", "DataEntry", "ViewOnly" };
@@ -39,6 +40,41 @@ namespace InstrumentKaHealth.Data
 
                 await userManager.CreateAsync(adminUser, "Admin@123");
                 await userManager.AddToRoleAsync(adminUser, "SuperUser");
+            }
+
+            // Add sample instruments if none exist
+            if (!context.Instruments.Any())
+            {
+                var sampleInstruments = new List<Instrument>
+                {
+                    new Instrument
+                    {
+                        Name = "Oscilloscope XYZ-2000",
+                        SerialNumber = "OSC-2023-001",
+                        Location = "Lab 1",
+                        Department = "Electronics",
+                        Status = "Operational",
+                        LastMaintenanceDate = DateTime.Now.AddMonths(-2),
+                        NextMaintenanceDate = DateTime.Now.AddMonths(4),
+                        CreatedBy = adminUser.Id,
+                        CreatedAt = DateTime.Now
+                    },
+                    new Instrument
+                    {
+                        Name = "Spectrum Analyzer SA-5000",
+                        SerialNumber = "SA-2023-002",
+                        Location = "Lab 2",
+                        Department = "RF Testing",
+                        Status = "Operational",
+                        LastMaintenanceDate = DateTime.Now.AddMonths(-1),
+                        NextMaintenanceDate = DateTime.Now.AddMonths(5),
+                        CreatedBy = adminUser.Id,
+                        CreatedAt = DateTime.Now
+                    }
+                };
+
+                context.Instruments.AddRange(sampleInstruments);
+                await context.SaveChangesAsync();
             }
         }
     }

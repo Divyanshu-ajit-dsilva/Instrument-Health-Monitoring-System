@@ -22,8 +22,8 @@
                     <table class="table table-striped table-hover">
                         <thead class="table-dark">
                             <tr>
-                                <th>Code</th>
                                 <th>Name</th>
+                                <th>Serial Number</th>
                                 <th>Department</th>
                                 <th>Status</th>
                                 <th>Last Maintenance</th>
@@ -36,8 +36,8 @@
                             @foreach (var item in Model)
                             {
                                 <tr>
-                                    <td>@item.InstrumentCode</td>
-                                    <td>@item.InstrumentName</td>
+                                    <td>@item.Name</td>
+                                    <td>@item.SerialNumber</td>
                                     <td>@item.Department</td>
                                     <td>
                                         <span class="badge @GetStatusBadgeClass(item.Status)">
@@ -128,16 +128,14 @@
 </div>
 
 @functions {
-    string GetStatusBadgeClass(HealthStatus status)
+    string GetStatusBadgeClass(string status)
     {
         return status switch
         {
-            HealthStatus.Excellent => "bg-success",
-            HealthStatus.Good => "bg-info",
-            HealthStatus.Fair => "bg-warning",
-            HealthStatus.Poor => "bg-danger",
-            HealthStatus.Critical => "bg-danger",
-            HealthStatus.OutOfService => "bg-dark",
+            "Operational" => "bg-success",
+            "Under Maintenance" => "bg-warning",
+            "Out of Service" => "bg-danger",
+            "Needs Attention" => "bg-info",
             _ => "bg-secondary"
         };
     }
