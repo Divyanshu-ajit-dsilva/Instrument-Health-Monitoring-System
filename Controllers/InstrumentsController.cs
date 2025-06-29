@@ -64,7 +64,6 @@ namespace InstrumentKaHealth.Controllers
 
                 instrument.CreatedBy = user.FullName;
                 instrument.CreatedAt = DateTime.Now;
-                instrument.Department = user.Department;
 
                 if (User.IsInRole("SuperUser"))
                 {
